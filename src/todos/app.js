@@ -71,9 +71,14 @@ export const App = (elementId) => {
 
     //? BORRAR COMPLETADOS
     clearcompleted.addEventListener('click', (event) => {
-        todoStore.deleteCompleted();
-        displayTodos();
+        if (todoStore.getTodos().length === 0) {
+            alert('No hay tareas asignadas.')
+        } else {
+            todoStore.deleteCompleted();
+            displayTodos();
+        }
     })
+
 
     //? MARCAR EL FILTRO SELECCIONADO
     filtersLI.forEach(element => {
@@ -96,9 +101,5 @@ export const App = (elementId) => {
             displayTodos();
 
         })
-    })
-
-    window.addEventListener('load', () => {
-        window.location.hash = Filters.All;
     })
 }

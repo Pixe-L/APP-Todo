@@ -17,11 +17,13 @@ const state = {
     filter: Filters.All,
 }
 
+//? INICIAR LA TIENDA
 const initStore = () => {
     loadStore();
     // console.log('InitStore 🍍');
 }
 
+//? RECARCAR TODA LA TIENDA
 const loadStore = () => {
     if (!localStorage.getItem('state')) return;
 
@@ -30,10 +32,12 @@ const loadStore = () => {
     state.filter = Filters.All;
 }
 
+//? GUARDAR TODO EN LOCAL STORAGE
 const saveStateToLocalStorage = () => {
     localStorage.setItem('state', JSON.stringify(state));
 }
 
+//? SELECCIONAR TODO POR FILTRO 
 const getTodos = (filter = Filters.All) => {
     switch (filter) {
         case Filters.All:
@@ -54,12 +58,13 @@ const getTodos = (filter = Filters.All) => {
  * 
  * @param {String} description 
  */
+//? AGREGAR UN TODO CON DESCRIPCION
 const addTodo = (description) => {
     if (!description) throw new Error('Description is required');
     state.todos.push(new Todo(description));
-
     saveStateToLocalStorage();
 }
+
 
 const toogleTodo = (todoId) => {
     state.todos = state.todos.map(todo => {
@@ -68,22 +73,19 @@ const toogleTodo = (todoId) => {
         }
         return todo;
     });
-
     saveStateToLocalStorage();
 }
 
+//? ELIMINAR UN SOLO TODO 
 const deleteTodo = (todoId) => {
     state.todos = state.todos.filter(todo => todo.id !== todoId);
     saveStateToLocalStorage();
 }
 
+//? ELIMINAR TODOS COMPLETADOS
 const deleteCompleted = () => {
-    if (Todo.done == 0) {
-        alert('Hola')
-    } else {
-        state.todos = state.todos.filter(todo => !todo.done);
-        saveStateToLocalStorage();
-    }
+    state.todos = state.todos.filter(todo => !todo.done);
+    saveStateToLocalStorage();
 }
 
 /**
@@ -91,6 +93,9 @@ const deleteCompleted = () => {
  * @param {Filters} newFilter 
  */
 const setFilter = (newFilter = Filters.All) => {
+    if (getTodos().length === 0) {
+        alert('No hay tareas asignadas!')
+    }
     Object.keys(Filters).includes(Filters.All, Filters.Completed, Filters.Pending);
     state.filter = newFilter;
     saveStateToLocalStorage();
